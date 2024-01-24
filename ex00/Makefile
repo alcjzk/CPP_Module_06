@@ -4,10 +4,10 @@ OBJ_DIR	= ./obj
 SRC_DIR = .
 
 CC 		= c++
-CFLAGS 	= -MP -MMD -I$(SRC_DIR) -Wall -Wextra -Werror -Wpedantic -g -std=c++17
+CFLAGS 	= -MP -MMD -I$(SRC_DIR) -Wall -Wextra -Werror -Wpedantic -g -std=c++17 -Wno-unused-parameter
 SHELL	= /bin/sh
 
-SRCS	= main.cpp
+SRCS	= main.cpp ScalarConverter.cpp Value.cpp
 
 all: $(NAME)
 
@@ -53,4 +53,3 @@ $(OBJ_DIR):
 
 vpath %.cpp $(SRC_DIR)
 -include $(SRCS:%.cpp=$(OBJ_DIR)/%.d)
-1
