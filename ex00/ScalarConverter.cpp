@@ -8,69 +8,56 @@ void ScalarConverter::convert(const std::string& value_str)
 {
     Value value(value_str);
 
-    std::cout << "char: ";
-    display(value.as_char());
-    std::cout << "int: ";
-    display(value.as_int());
-    std::cout << "float: ";
-    display(value.as_float());
-    std::cout << "double: ";
-    display(value.as_double());
+    std::cout << "char: " << to_literal(value.as_optional<char>()) << '\n';
+    std::cout << "int: " << to_literal(value.as_optional<int>()) << '\n';
+    std::cout << "float: " << to_literal(value.as_optional<float>()) << '\n';
+    std::cout << "double: " << to_literal(value.as_optional<double>()) << '\n';
+}
+
+template <typename Floating, std::enable_if_t<std::is_floating_point_v<Floating>, bool>>
+std::string ScalarConverter::to_string(Floating value)
+{
+    if (std::isinf(value))
+    {
+        return value < 0.0f ? "-inf" : "+inf";
+    }
+    if (std::isnan(value))
+    {
+        return "nan";
+    }
+    return std::to_string(value);
 }
 
 template <typename T>
-void ScalarConverter::display(std::optional<T> value)
+std::string ScalarConverter::to_literal(std::optional<T> value)
 {
     if (value)
     {
-        return display(*value);
+        return to_literal(*value);
     }
-    std::cout << "impossible\n";
+    return "impossible";
 }
 
-void ScalarConverter::display(char value)
+std::string ScalarConverter::to_literal(char value)
 {
     if (!std::isprint(value))
     {
-        std::cout << "not displayable\n";
-        return;
+        return "not displayable";
     }
-    std::cout << '\'' << value << "'\n";
+    return std::string("'") + value + "'";
 }
 
-void ScalarConverter::display(int value)
+std::string ScalarConverter::to_literal(int value)
 {
-    std::cout << value << "\n";
+    return std::to_string(value);
 }
 
-void ScalarConverter::display(float value)
+std::string ScalarConverter::to_literal(float value)
 {
-    if (std::isinf(value))
-    {
-        std::cout << (value < 0.0f ? '-' : '+');
-        std::cout << "inff\n";
-        return;
-    }
-    if (std::isnan(value))
-    {
-        std::cout << "nanf\n";
-        return;
-    }
-    std::cout << std::fixed << std::setprecision(1) << value << "f\n";
+    return to_string(value) + 'f';
 }
 
-void ScalarConverter::display(double value)
+std::string ScalarConverter::to_literal(double value)
 {
-    if (std::isinf(value))
-    {
-        std::cout << (value < 0.0 ? '-' : '+');
-        std::cout << "inf\n";
-        return;
-    }
-    if (std::isnan(value))
-    {
-        std::cout << "nan\n";
-        return;
-    }
-    std::cout << std::fixed << std::setprecision(1) << value << "\n";
+    return to_string(value);
 }

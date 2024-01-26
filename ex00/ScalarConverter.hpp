@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <string>
+#include <type_traits>
 #include "Value.hpp"
 
 class ScalarConverter
@@ -18,11 +19,15 @@ class ScalarConverter
         static void convert(const std::string& value);
 
     private:
-        template <typename T>
-        static void display(std::optional<T> value);
+        template <typename Floating,
+                  std::enable_if_t<std::is_floating_point_v<Floating>, bool> = true>
+        static std::string to_string(Floating value);
 
-        static void display(char value);
-        static void display(int value);
-        static void display(float value);
-        static void display(double value);
+        template <typename T>
+        static std::string to_literal(std::optional<T> value);
+
+        static std::string to_literal(char value);
+        static std::string to_literal(int value);
+        static std::string to_literal(float value);
+        static std::string to_literal(double value);
 };
