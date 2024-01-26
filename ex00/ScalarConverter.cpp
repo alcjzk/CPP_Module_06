@@ -1,10 +1,7 @@
-#include <cctype>
 #include <iostream>
-#include <string>
-#include <limits>
-#include <cmath>
-#include <variant>
 #include <iomanip>
+#include <cctype>
+#include <cmath>
 #include "ScalarConverter.hpp"
 
 void ScalarConverter::convert(const std::string& value_str)

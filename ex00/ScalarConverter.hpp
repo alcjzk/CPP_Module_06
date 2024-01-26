@@ -2,8 +2,6 @@
 
 #include <optional>
 #include <string>
-#include <limits>
-#include <variant>
 #include "Value.hpp"
 
 class ScalarConverter

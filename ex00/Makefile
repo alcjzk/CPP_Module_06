@@ -4,7 +4,7 @@ OBJ_DIR	= ./obj
 SRC_DIR = .
 
 CC 		= c++
-CFLAGS 	= -MP -MMD -I$(SRC_DIR) -Wall -Wextra -Werror -Wpedantic -g -std=c++17 -Wno-unused-parameter
+CFLAGS 	= -MP -MMD -I$(SRC_DIR) -Wall -Wextra -Werror -Wpedantic -g -std=c++17
 SHELL	= /bin/sh
 
 SRCS	= main.cpp ScalarConverter.cpp Value.cpp
