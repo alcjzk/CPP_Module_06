@@ -1,4 +1,4 @@
-NAME	= tests
+NAME	= convert
 
 OBJ_DIR	= ./obj
 SRC_DIR = .
