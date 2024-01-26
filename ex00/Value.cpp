@@ -3,7 +3,7 @@
 #include <cmath>
 #include "Value.hpp"
 
-Value::Value(const std::string& value) : _value(std::monostate{})
+Value::Value(const std::string& value) noexcept : _value(std::monostate{})
 {
     std::regex char_expr(R"('.')", std::regex::ECMAScript);
     std::regex int_expr(R"([\+-]?[0-9]+)", std::regex::ECMAScript);

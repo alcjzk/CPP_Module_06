@@ -7,6 +7,7 @@
 class ScalarConverter
 {
     public:
+        ~ScalarConverter() = delete;
         ScalarConverter() = delete;
         ScalarConverter(const ScalarConverter&) = delete;
         ScalarConverter(ScalarConverter&&) = delete;
