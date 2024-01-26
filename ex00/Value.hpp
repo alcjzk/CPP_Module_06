@@ -7,7 +7,13 @@
 class Value
 {
     public:
+        Value() = delete;
         Value(const std::string& value);
+        Value(const Value&) = default;
+        Value(Value&&) = default;
+
+        Value& operator=(const Value&) = default;
+        Value& operator=(Value&&) = default;
 
         std::optional<char> as_char() const noexcept;
         std::optional<int> as_int() const noexcept;
