@@ -52,7 +52,7 @@ class Value
         }
 
         template <typename T>
-        static std::optional<T> option_from(std::monostate)
+        static std::optional<T> optional_from(std::monostate)
         {
             return std::nullopt;
         }
