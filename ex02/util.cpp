@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <cstdint>
 #include "A.hpp"
 #include "B.hpp"
 #include "C.hpp"
