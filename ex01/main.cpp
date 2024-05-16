@@ -1,19 +1,28 @@
 #include <cstdlib>
 #include <cassert>
 #include <iostream>
+#include <utility>
 #include "Data.hpp"
 #include "Serializer.hpp"
 
 int main()
 {
-    Data* data = new Data(42);
+    // Orthodox
+    {
+        Data data; // Default construct
+        Data copy(data); // Copy construct
+        data = copy; // Copy assign
+        Data moved_into(std::move(data)); // Move construct
+        moved_into = std::move(copy); // Move assign
+    }
 
-    assert(data->value() == 42);
+    Data data(42);
 
-    Data* data_copy = Serializer::deserialize(Serializer::serialize(data));
-    assert(data == data_copy);
+    uintptr_t data_address = Serializer::serialize(&data);
+    Data* data_ptr = Serializer::deserialize(data_address);
 
-    assert(data_copy->value() == 42);
+    assert(data_ptr == &data);
+    assert(data_ptr->value() == 42);
 
     std::cout << "Tests ok\n";
 
