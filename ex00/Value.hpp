@@ -18,42 +18,51 @@ class Value
         Value& operator=(const Value&) noexcept = default;
         Value& operator=(Value&&) noexcept = default;
 
-        template <typename T>
-        std::optional<T> as_optional() const
+        /// Converts the value into type `To`, returns nullopt if conversion is not valid.
+        template <typename To>
+        std::optional<To> try_into() const
         {
             return std::visit([](auto value) {
-                return optional_from<T>(value);
+                return try_from<To>(value);
             }, _value);
         }
 
     private:
         std::variant<std::monostate, char, int, float, double> _value;
 
-        template <typename T, typename U>
-        static std::optional<T> optional_from(U value)
-        {
-            if constexpr (std::is_integral_v<T> && std::is_floating_point_v<U>)
-            {
-                U integer_part;
-                if (std::isnan(value) ||
-                    std::isinf(value) ||
-                    std::modf(value, &integer_part) != 0.0)
-                {
-                    return std::nullopt;
-                }
-            }
-            if (std::isfinite(value) &&
-               (value < std::numeric_limits<T>::lowest() ||
-                value > std::numeric_limits<T>::max()))
-            {
-                return std::nullopt;
-            }
-            return std::optional<T>(static_cast<T>(value));
-        }
+        /// Conversion overload for invariant, always returns nullopt.
+        template <typename To>
+        static std::optional<To> try_from(std::monostate);
 
-        template <typename T>
-        static std::optional<T> optional_from(std::monostate)
+        /// Converts from type `To` into type `From`, returns nullopt if conversion is not valid.
+        template <typename To, typename From>
+        static std::optional<To> try_from(From value);
+};
+
+template <typename To>
+std::optional<To> Value::try_from(std::monostate)
+{
+    return std::nullopt;
+}
+
+template <typename To, typename From>
+std::optional<To> Value::try_from(From value)
+{
+    if constexpr (std::is_integral_v<To> && std::is_floating_point_v<From>)
+    {
+        long double integer_part;
+        if (std::isnan(value) ||
+            std::isinf(value) ||
+            std::modf(value, &integer_part) != 0.0)
         {
             return std::nullopt;
         }
-};
+    }
+    if (std::isfinite(value) &&
+       (value < std::numeric_limits<To>::lowest() ||
+        value > std::numeric_limits<To>::max()))
+    {
+        return std::nullopt;
+    }
+    return std::optional<To>(static_cast<To>(value));
+}

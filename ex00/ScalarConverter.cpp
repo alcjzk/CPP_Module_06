@@ -1,17 +1,17 @@
 #include <iostream>
-#include <iomanip>
 #include <cctype>
 #include <cmath>
+#include "Value.hpp"
 #include "ScalarConverter.hpp"
 
 void ScalarConverter::convert(const std::string& value_str)
 {
     Value value(value_str);
 
-    std::cout << "char: " << to_literal(value.as_optional<char>()) << '\n';
-    std::cout << "int: " << to_literal(value.as_optional<int>()) << '\n';
-    std::cout << "float: " << to_literal(value.as_optional<float>()) << '\n';
-    std::cout << "double: " << to_literal(value.as_optional<double>()) << '\n';
+    std::cout << "char: " << to_literal(value.try_into<char>()) << '\n';
+    std::cout << "int: " << to_literal(value.try_into<int>()) << '\n';
+    std::cout << "float: " << to_literal(value.try_into<float>()) << '\n';
+    std::cout << "double: " << to_literal(value.try_into<double>()) << '\n';
 }
 
 template <typename Floating, std::enable_if_t<std::is_floating_point_v<Floating>, bool>>

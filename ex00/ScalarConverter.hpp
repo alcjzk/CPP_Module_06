@@ -3,7 +3,6 @@
 #include <optional>
 #include <string>
 #include <type_traits>
-#include "Value.hpp"
 
 class ScalarConverter
 {
